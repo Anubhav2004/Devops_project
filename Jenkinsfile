@@ -1,20 +1,14 @@
-pipeline {
-    agent any
+node {
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+    stage('Preparation') {
+        git branch: 'main',
+            url: 'https://github.com/Anubhav2004/Devops_project.git'
+    }
 
-        stage('Deploy to NGINX') {
-            steps {
-                bat '''
-                echo Deploying files to NGINX html folder
-                xcopy "%WORKSPACE%\\*" "C:\\Users\\Administrator\\Downloads\\nginx-1.29.4\\nginx-1.29.4\\html\\" /E /I /Y
-                '''
-            }
-        }
+    stage('Copy to Test Unit 45') {
+        bat '''
+        if not exist C:\\jenkins\\test-units\\45 mkdir C:\\jenkins\\test-units\\45
+        xcopy /E /I /Y "%WORKSPACE%\\*" "C:\\jenkins\\test-units\\45\\"
+        '''
     }
 }
